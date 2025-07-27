@@ -5,17 +5,17 @@ import (
 )
 
 type Event struct {
-	ID               string    `json:"id" db:"id"`
-	Title            string    `json:"title" db:"title"`
-	Description      string    `json:"description" db:"description"`
-	Venue            string    `json:"venue" db:"venue"`
-	EventDate        time.Time `json:"event_date" db:"event_date"`
-	Price            float64   `json:"price" db:"price"`
-	TotalTickets     int       `json:"total_tickets" db:"total_tickets"`
-	AvailableTickets int       `json:"available_tickets" db:"available_tickets"`
-	ImageUrl         string    `json:"image_url" db:"image_url"`
-	CreatedAt        time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt        time.Time `json:"updated_at" db:"updated_at"`
+	ID               string    `json:"id" gorm:"primaryKey;type:varchar(255)"`
+	Title            string    `json:"title" gorm:"not null;type:varchar(255)"`
+	Description      string    `json:"description" gorm:"type:text"`
+	Venue            string    `json:"venue" gorm:"not null;type:varchar(255)"`
+	EventDate        time.Time `json:"event_date" gorm:"not null"`
+	Price            float64   `json:"price" gorm:"not null;type:decimal(10,2)"`
+	TotalTickets     int       `json:"total_tickets" gorm:"not null"`
+	AvailableTickets int       `json:"available_tickets" gorm:"not null"`
+	ImageUrl         string    `json:"image_url" gorm:"type:varchar(500)"`
+	CreatedAt        time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt        time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }
 
 type CreateEventRequest struct {

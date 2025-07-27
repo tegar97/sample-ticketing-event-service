@@ -7,18 +7,30 @@ import (
 
 	"event-service/internal/config"
 	"event-service/internal/handler"
+	"event-service/internal/models"
 	"event-service/internal/repository"
 	"event-service/internal/service"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Load environment variables from .env file
+	if err := godotenv.Load(); err != nil {
+		log.Println("Warning: .env file not found, using system environment variables")
+	}
+
 	cfg := config.Load()
 
 	db, err := config.ConnectDB(cfg)
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
+	}
+
+	// Auto migrate the database schema
+	if err := db.AutoMigrate(&models.Event{}); err != nil {
+		log.Fatal("Failed to auto migrate database:", err)
 	}
 
 	eventRepo := repository.NewEventRepository(db)
