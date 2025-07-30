@@ -52,6 +52,23 @@ func main() {
 		c.Next()
 	})
 
+	// Root route
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Event Service API",
+			"version": "v1",
+			"status":  "running",
+		})
+	})
+
+	// Health check route
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "healthy",
+			"service": "event-service",
+		})
+	})
+
 	api := r.Group("/api/v1")
 	{
 		api.GET("/events", eventHandler.GetEvents)
