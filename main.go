@@ -28,7 +28,6 @@ func main() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Auto migrate the database schema
 	if err := db.AutoMigrate(&models.Event{}); err != nil {
 		log.Fatal("Failed to auto migrate database:", err)
 	}
@@ -64,7 +63,7 @@ func main() {
 	// Health check route
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"status": "healthy",
+			"status":  "healthy",
 			"service": "event-service",
 		})
 	})
